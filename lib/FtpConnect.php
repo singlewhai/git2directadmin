@@ -59,7 +59,7 @@
 
         // create derectory
         public function createDirectory($directory){
-            if (ftp_mkdir($this->ftp_conn, $directory))
+            if (@ftp_mkdir($this->ftp_conn, $directory))
             {
                 return $this->JsonData("Successfully created $directory", 200);
             }
@@ -113,6 +113,72 @@
                 if ($e->getCode() == 2) $error = $e->getMessage(); 
             }
             return $error;
+        }
+
+        /**
+         * varsion is a name of folder in deploy directory
+         * name is a name of new folder will be under the public_html
+         */
+        public function deploy($version, $name){
+              
+        }
+
+        /** 
+         * this private function use for copying to file on server
+         */
+        private function copyServerFile($src, $des){
+            /* 
+            if(ftp_chdir($this->conn, $src)){
+                $rawList = ftp_nlist($conn, "."); 
+                if (!in_array($destDir, $rawList)) 
+                { 
+                    ftp_mkdir($conn, $destDir); 
+                    //@ftp_chmod($conn, 0777, $image_dir); 
+                }
+            }
+           
+            $files = ftp_nlist($this->ftp_conn, $path);
+                foreach ($files as $file)
+                {
+                    $this->delete($path.'/'.$file);
+                }
+                return $this->delete($path);
+
+            $srcDir = $this->fieldarray['sourceItemId']; 
+            $destDir = $this->fieldarray['itemId']; 
+            $localDir = PUBLIC_PATH . 'photos/' . $this->fieldarray['imageType'] . '/original/' . $this->fieldarray['itemId']; 
+             
+            if ($conn = ftp_connect(PHOTO_SERVER)) 
+            { 
+                if (ftp_login($conn, PHOTO_SERVER_USER, PHOTO_SERVER_PW)) 
+                { 
+                    ftp_pasv($conn, true); 
+                    if (ftp_chdir($conn, PHOTO_SERVER_UPLOAD_DIR)) 
+                    { 
+                        $rawList = ftp_nlist($conn, "."); 
+                        if (!in_array($destDir, $rawList)) 
+                        { 
+                            ftp_mkdir($conn, $destDir); 
+                            //@ftp_chmod($conn, 0777, $image_dir); 
+                        } 
+                         
+                        $files = ftp_nlist($conn, $srcDir); 
+                        foreach ($files as $file) 
+                        { 
+                            if ($file != "." && $file != "..") 
+                            { 
+                                $srcFile = PHOTO_SERVER_FTP_GET_SRC_DIR . '/' . $srcDir . '/' . $file; 
+                                $localFile = $localDir . '/' . $file; 
+                                 
+                                if (ftp_get($conn, $localFile, $srcFile, FTP_BINARY)) 
+                                { 
+                                    $upload = ftp_put($conn, $destDir . "/" . $file, $localFile, FTP_BINARY); 
+                                } 
+                            } 
+                        } 
+                    } 
+                }
+            }*/
         }
     }
 ?>
